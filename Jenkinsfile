@@ -12,6 +12,7 @@ pipeline {
                     dockerImage = docker.build registry + ":$BUILD_NUMBER"
                     docker.withRegistry( '', registryCredential ) {
                     dockerImage.push()
+                    }
                 }
             }
         }
