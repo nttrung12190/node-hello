@@ -23,11 +23,15 @@ pipeline {
         //     }
         // }
         stage('Deploy') {
-            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh '''
-                    echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
+            steps {
+                script{
+                    withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh '''
+                            echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
 
-                '''
+                        '''
+                    }
+                }
             }
             // steps {
             //     sh '''
