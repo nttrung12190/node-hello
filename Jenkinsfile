@@ -1,7 +1,6 @@
 pipeline {
     environment {
         registry = "nttrung12190/hello"
-        registryCredential = credentials('dockerhub')
         dockerImage = ''
     }
     agent any
@@ -13,12 +12,13 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Push Image') {
             steps {
                 script{
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
                             echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
+                            docker push $dockerImage
 
                         '''
                     }
