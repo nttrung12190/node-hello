@@ -13,15 +13,6 @@ pipeline {
                 }
             }
         }
-        // stage('Deploy Image') {
-        //     steps{
-        //         script {
-        //             docker.withRegistry( 'https://hub.docker.com/repository/docker/nttrung12190/hello', registryCredential ) {
-        //                 dockerImage.push()
-        //             }
-        //         }
-        //     }
-        // }
         stage('Deploy') {
             steps {
                 script{
@@ -33,12 +24,6 @@ pipeline {
                     }
                 }
             }
-            // steps {
-            //     sh '''
-            //         echo "Tr123456" | docker login --username nttrung12190 --password-stdin
-
-            //     '''
-            // }
         }
         stage('Remove Unused docker image') {
             steps{
