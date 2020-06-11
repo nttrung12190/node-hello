@@ -2,13 +2,14 @@ pipeline {
     environment {
         registry = "nttrung12190/hello"
         dockerImage = ''
+        dockerTag = "$GIT_BRANCH-$BUILD_NUMBER"
     }
     agent any
     stages {
         stage('Building image') {
             steps{
                 script {
-                    dockerImage = docker.build registry + ":$GIT_BRANCH-$BUILD_NUMBER"
+                    dockerImage = docker.build registry + ":$dockerTag"
                 }
             }
         }
@@ -18,7 +19,7 @@ pipeline {
                     withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh '''
                             echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
-                            docker push "$registry:$BUILD_NUMBER"
+                            docker push "$registry:$dockerTag"
 
                         '''
                     }
@@ -27,7 +28,7 @@ pipeline {
         }
         stage('Remove Unused docker image') {
             steps{
-                sh "docker rmi $registry:$BUILD_NUMBER"
+                sh "docker rmi $registry:$dockerTag"
             }
         }
     }
