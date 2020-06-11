@@ -23,12 +23,18 @@ pipeline {
         //     }
         // }
         stage('Deploy') {
-            steps {
+            withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                 sh '''
-                    echo "Tr123456" | docker login --username nttrung12190 --password-stdin
+                    echo "$PASSWORD" | docker login --username "$USERNAME" --password-stdin
 
                 '''
             }
+            // steps {
+            //     sh '''
+            //         echo "Tr123456" | docker login --username nttrung12190 --password-stdin
+
+            //     '''
+            // }
         }
         stage('Remove Unused docker image') {
             steps{
